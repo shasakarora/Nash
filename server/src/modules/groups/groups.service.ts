@@ -1,5 +1,4 @@
-import { error } from "node:console";
-import { AddMemberRequestDTO } from "./dtos/add-member.dto.js";
+import { AddOrRemoveMemberRequestDTO } from "./dtos/add-member.dto.js";
 import { CreateGroupRequestDTO } from "./dtos/create-group.dto.js"
 import { GroupResponseDTO } from "./dtos/group-response.dto.js"
 import { MemberResponseDTO } from "./dtos/member-response.dto.js";
@@ -36,13 +35,13 @@ export const getGroupById = async (
 }
 
 export const addMember = async (
-    userID: string,
+    userId: string,
     groupId: string,
-    input: AddMemberRequestDTO
+    input: AddOrRemoveMemberRequestDTO
 ): Promise<MemberResponseDTO> => {
-    const isAdmin = await groupsRepo.isAdmin(groupId, userID);
+    const isAdmin = await groupsRepo.isAdmin(groupId, userId);
     if (!isAdmin) {
-        throw new Error("Only admins can add members");
+        throw new Error("Only admin can add members");
     }
     const newMember = await groupsRepo.addMember(groupId, input.username);
     return {
@@ -50,4 +49,16 @@ export const addMember = async (
         email: newMember.email,
         role: newMember.role
     };
+}
+
+export const removeMember = async (
+    userId: string,
+    groupId: string,
+    input: AddOrRemoveMemberRequestDTO
+): Promise<void> => {
+    const isAdmin = await groupsRepo.isAdmin(groupId, userId)
+    if (!isAdmin) {
+        throw new Error("Only admin can remove members");
+    }
+    await groupsRepo.removeMember(groupId, input.username);
 }

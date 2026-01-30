@@ -134,3 +134,26 @@ export const addMember = async (
         throw err;
     } finally { client.release(); }
 }
+
+export const removeMember = async (
+    groupId: string,
+    username: string
+): Promise<void> => {
+    const client = await pool.connect()
+    try {
+        const memberId = await client.query(
+            `SELECT id
+            FROM users
+            WHERE username = $1`,
+            [username]
+        );
+        await client.query(
+            `DELETE FROM group_members
+            WHERE group_id = $1
+            AND user_id = $2`,
+            [groupId, memberId.rows[0].id]
+        );
+    } catch (err: any) {
+        throw err;
+    }
+}

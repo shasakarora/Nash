@@ -1,7 +1,7 @@
 import {z} from "zod";
 
-export const AddMemberSchema = z.object({
+export const AddOrRemoveMemberSchema = z.object({
     username: z.string(),
 });
 
-export type AddMemberRequestDTO = z.infer<typeof AddMemberSchema>;
+export type AddOrRemoveMemberRequestDTO = z.infer<typeof AddOrRemoveMemberSchema>;

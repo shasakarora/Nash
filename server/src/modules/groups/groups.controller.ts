@@ -21,10 +21,19 @@ export const getGroupById = async (req: AuthRequest, res: Response) => {
 }
 
 export const addMember = async (req: AuthRequest, res: Response) => {
-    try{
+    try {
         const result = await groupService.addMember(req.user, req.params.group_id.toString(), req.body);
         res.status(200).json(result);
-    }catch (err: any) {
+    } catch (err: any) {
+        res.status(404).json({ error: err.message });
+    }
+}
+
+export const removeMember = async (req: AuthRequest, res: Response) => {
+    try {
+        const result = await groupService.removeMember(req.user,req.params.group_id.toString(), req.body);
+        res.status(200).json(result);
+    } catch (err: any) {
         res.status(404).json({ error: err.message });
     }
 }
