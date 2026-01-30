@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/config/theme.dart';
+import 'bet_tile.dart';
 
 class BetTrendsCard extends StatelessWidget {
   const BetTrendsCard({super.key, required this.data});
@@ -27,7 +28,7 @@ class BetTrendsCard extends StatelessWidget {
             Card(
               color: context.colorScheme.onSurfaceVariant,
               child: Container(
-                height: 200,
+                height: 250,
                 alignment: Alignment.center,
                 child: Text(
                   "GRAPH GOES HERE",
@@ -37,6 +38,43 @@ class BetTrendsCard extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
+            const SizedBox(height: 32),
+            Text(
+              "Recent Bets",
+              style: TextStyle(
+                fontSize: 20,
+                color: context.colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Column(
+              children: List.generate(data["transactions"].length.clamp(0, 5), (
+                index,
+              ) {
+                final Map<String, dynamic> transaction =
+                    data["transactions"][index];
+
+                return RecentBetTile(
+                  transaction: transaction,
+                  showBorder: index < 4,
+                );
+              }),
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                backgroundColor: context.colorScheme.primary,
+                foregroundColor: context.colorScheme.onPrimary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: Text("See More >"),
             ),
           ],
         ),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:app/config/theme.dart';
 import 'package:app/pages/bet/widgets/bet_trends_card.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,21 @@ class _BetPageState extends State<BetPage> {
       "payout": 120,
       "my_bet": {"amount": 100},
       "title": "Will Keshav bathe today?",
+      "transactions": List.generate(
+        20,
+        (_) => <String, dynamic>{
+          "user_id": "some-random-id",
+          "amount": 1000,
+          "placed_at": DateTime.now().subtract(
+            Duration(
+              days: Random().nextInt(10),
+              minutes: Random().nextInt(10),
+              hours: Random().nextInt(10),
+              seconds: Random().nextInt(10),
+            ),
+          ),
+        },
+      ),
     };
 
     return Scaffold(
@@ -93,15 +110,22 @@ class _BetPageState extends State<BetPage> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  BetDetailsCard(data: data),
-                  const SizedBox(height: 16),
-                  BetTrendsCard(data: data),
-                ],
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 24,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      BetDetailsCard(data: data),
+                      const SizedBox(height: 16),
+                      BetTrendsCard(data: data),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
