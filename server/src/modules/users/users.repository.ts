@@ -1,6 +1,7 @@
 import { PoolClient } from "pg";
 import pool from "../../config/db.js";
 import { User } from "./users.model.js";
+import { Group, Member, GroupMember } from "../groups/groups.model.js";
 
 const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -57,6 +58,16 @@ export const getUserFromDB = async (userId: string): Promise<User> => {
 
   return mapRowToUser(result.rows[0]);
 };
+
+export const getGroupMembers = async (userId: string): Promise<GroupMember[]> => {
+  const result = await pool.query(`SELECT * FROM group_members WHERE user_id=$1`,[userId])
+  return result.rows
+}
+
+export const getGroups = async (groupIds: string[]): Promise<Group[]> => {
+  const result = await pool.query(`SELECT * FROM groups WHERE id=ANY($1)`,[groupIds])
+  return result.rows
+}
 
 export const performDailyCheckIn = async (
   userId: string,

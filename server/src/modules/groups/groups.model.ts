@@ -13,3 +13,10 @@ export interface Member {
     role:string,
     joined_at:Date,
 }
+
+export interface GroupMember {
+    group_id: string,
+    user_id: string,
+    role: string,
+    joined_at: Date
+}
