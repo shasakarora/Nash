@@ -3,9 +3,11 @@ import { GroupResponseDTO } from "./dtos/group-response.dto.js"
 import * as groupsRepo from "./groups.repository.js"
 
 export const createGroup = async (
+    creatorID: string,
     input: CreateGroupRequestDTO
 ): Promise<GroupResponseDTO> => { 
-    const newGroup = await groupsRepo.createGroup(input.name, input.description, input.adminId);
+    const newGroup = await groupsRepo.createGroup(input.name, input.description, creatorID);
+
     return {
         id: newGroup.id,
         name: newGroup.name,
@@ -19,6 +21,7 @@ export const getGroupById = async (
     input: string
 ): Promise<GroupResponseDTO> => { 
     const requestedGroup = await groupsRepo.getGroupById(input);
+    
     return {
         id: requestedGroup.id,
         name: requestedGroup.name,
