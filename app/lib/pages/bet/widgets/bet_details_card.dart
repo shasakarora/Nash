@@ -17,6 +17,15 @@ class BetDetailsCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
+              data['title'].toString(),
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: context.colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
               "\$${(data["total_pot"] as num).formatWithCommas()}",
               style: TextStyle(
                 fontSize: 52,
@@ -37,15 +46,6 @@ class BetDetailsCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18,
                 color: context.colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 32),
-            Text(
-              data['title'].toString(),
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: context.colorScheme.onSurface,
               ),
             ),
           ],
