@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:app/config/theme.dart';
 import 'package:app/pages/bet/bet_discussion.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'bet_details.dart';
 
@@ -149,6 +150,13 @@ class _BetPageState extends State<BetPage> {
           ],
         ),
       ),
+      floatingActionButton: page == 0 ? FloatingActionButton(
+        onPressed: () {
+          context.push('/group/:group_id/bets/:bet_id/resolve');
+        },
+        backgroundColor: context.colorScheme.secondary,
+        child: Icon(Icons.add, color: context.colorScheme.onSecondary),
+      ) : null,
     );
   }
 }

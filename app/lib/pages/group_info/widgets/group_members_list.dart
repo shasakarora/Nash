@@ -1,4 +1,5 @@
 import 'package:app/config/theme.dart';
+import 'package:app/pages/group_info/widgets/add_member_dialog.dart';
 import 'package:app/pages/group_info/widgets/group_member_card.dart';
 import 'package:flutter/material.dart';
 
@@ -51,12 +52,24 @@ class GroupMembersList extends StatelessWidget {
           if (index == 2) {
             return Padding(
               padding: const EdgeInsets.only(left: 4, bottom: 4),
-              child: Text(
-                "Members",
-                style: TextStyle(
-                  color: context.colorScheme.onSurface,
-                  fontSize: 18,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Members",
+                    style: TextStyle(
+                      color: context.colorScheme.onSurface,
+                      fontSize: 18,
+                    ),
+                  ),
+                  if (amIAdmin)
+                    IconButton(
+                      onPressed: () {
+                        showAddMemberDialog(context);
+                      },
+                      icon: Icon(Icons.add),
+                    ),
+                ],
               ),
             );
           }
