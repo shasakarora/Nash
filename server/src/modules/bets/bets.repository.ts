@@ -76,7 +76,7 @@ export const placeBet = async (userId: string, betId: string, amount: number, op
     await client.query(`UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2`, [amount, userId]);
 
     await client.query("COMMIT");
-    return mapRowToUserBet(result.row[0]);
+    return mapRowToUserBet(result.rows[0]);
 
   } catch (err: any) {
     await client.query('ROLLBACK');

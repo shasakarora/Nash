@@ -91,8 +91,11 @@ export const postBet = async (authUserID: string, groupId: string, title: string
 
 export const placeBet = async (authUserID: string, betId: string, amount: number, option: string): Promise<UserBet> => {
     const bet = await betRespository.getBetFromDB(betId);
+    console.log(bet)
     const user = await userRepository.getUserFromDB(authUserID);
+    console.log(user)
     const group = await groupRepository.getGroupById(bet.group_id);
+    console.log(group)
     if (authUserID === bet.creator_id) {
         throw new Error("Creator cannot place bet on own bet");
     } else if (bet.status !== "open") {
@@ -101,6 +104,7 @@ export const placeBet = async (authUserID: string, betId: string, amount: number
         throw new Error("Insufficient wallet balance to place bet");
     } else {
         const placedBet = await betRespository.placeBet(authUserID, betId, amount, option);
+        console.log(placedBet);
         await transactionRepository.createTransaction(authUserID, -amount, `Placed bet on option ${option} for bet ${bet.title}\nGROUP: ${group.name}`, placedBet.bet_id);
         return placedBet;
     }
