@@ -15,7 +15,7 @@ export const createMessage = async (
   content: string,
 ): Promise<Message> => {
   const result = await pool.query(
-    `INSERT INTO messages (room_id, sender_id, content)
+    `INSERT INTO messages (bet_id, sender_id, content)
      VALUES ($1, $2, $3)
      RETURNING *`,
     [roomID, senderID, content],
