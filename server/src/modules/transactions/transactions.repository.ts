@@ -24,7 +24,7 @@ export const getBetTransactions = async (
     betId?: string
 ): Promise<BetTransactions> => {
     try {
-        const userBets = pool.query(
+        const userBets =await pool.query(
             `SELECT *
             FROM user_bets
             JOIN users ON user_bets.user_id = users.id
@@ -32,7 +32,7 @@ export const getBetTransactions = async (
             [betId]
         );
         const result = userBets.rows.map((row: any) => {
-            mapRowToBetTransaction(row);
+            return mapRowToBetTransaction(row);
         })
         return { transactions: result };
     } catch (err: any) {
@@ -44,14 +44,14 @@ export const getUserTransactions = async (
     userId: string
 ): Promise<UserTransactions> => {
     try {
-        const userBets = pool.query(
+        const userTransactions = await pool.query(
             `SELECT *
             FROM transactions
             WHERE user_id = $1`,
             [userId]
         );
-        const result = userBets.rows.map((row: any) => {
-            mapRowToUserTransaction(row);
+        const result = userTransactions.rows.map((row: any) => {
+            return mapRowToUserTransaction(row);
         })
         return {
             transactions: result
@@ -69,7 +69,7 @@ export const createTransaction = async (
 ): Promise<void> => {
     try {
         const now: Date = new Date(Date.now());
-        pool.query(
+        await pool.query(
             `INSERT INTO transactions (bet_id, user_id, amount, description, created_at)
             VALUES ($1, $2, $3, $4, $5)`,
             [betId, userId, amount, description, now]

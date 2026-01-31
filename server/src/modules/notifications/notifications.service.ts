@@ -6,5 +6,5 @@ export const getNotifications = async (
 ): Promise<NotificationResponseDTO> => {
     const user_id = userId;
     const result = await notificationRepo.getNotifications(user_id);
-    return result;
+    return { notifications: result.notifications };
 }

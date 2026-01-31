@@ -21,7 +21,7 @@ export const getNotifications = async (
     const notifications = response.rows.map((row: any) => {
         return mapRowToCustomNotification(row);
     });
-    return notifications
+    return { notifications: notifications };
 }
 
 
@@ -30,7 +30,7 @@ export const createNotification = async (
     content: string
 ): Promise<void> => {
     const now: Date = new Date(Date.now());
-    pool.query(
+    await pool.query(
         `INSERT INTO notifications (user_id, content, created_at)
             VALUES ($1, $2, $3)`,
         [userId, content, now]
