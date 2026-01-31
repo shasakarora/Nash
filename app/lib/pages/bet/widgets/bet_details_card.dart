@@ -17,7 +17,7 @@ class BetDetailsCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "\$${(data["totalPot"] as num).formatWithCommas()}",
+              "\$${(data["total_pot"] as num).formatWithCommas()}",
               style: TextStyle(
                 fontSize: 52,
                 color: context.colorScheme.secondary,
@@ -26,14 +26,14 @@ class BetDetailsCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              "EXPECTED PAYOUT: \$120",
+              "EXPECTED PAYOUT: \$${data['my_bet']['expected_payout']}",
               style: TextStyle(
                 fontSize: 18,
                 color: context.colorScheme.onSurfaceVariant,
               ),
             ),
             Text(
-              "BET PLACED: \$100",
+              "BET PLACED: \$${data['my_bet']['amount']}",
               style: TextStyle(
                 fontSize: 18,
                 color: context.colorScheme.onSurfaceVariant,
@@ -41,7 +41,7 @@ class BetDetailsCard extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             Text(
-              "Will Keshav bathe today?",
+              data['title'].toString(),
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,

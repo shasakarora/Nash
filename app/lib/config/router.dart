@@ -1,3 +1,4 @@
+import 'package:app/pages/group_bets/group_bets.dart';
 import 'package:app/pages/group_creation/group_creation.dart';
 import 'package:app/pages/group_info/group_info.dart';
 import 'package:app/pages/groups/groups.dart';
@@ -75,8 +76,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/profile/:user_id',
+        builder: (context, state) => ProfilePage(
+          userID: state.pathParameters["user_id"]!,
+          heroTags: state.extra as List<String>,
+        ),
+      ),
+      GoRoute(
+        path: '/groups/:group_id/bets',
         builder: (context, state) =>
-            ProfilePage(userID: state.pathParameters["user_id"]!),
+            GroupBets(groupID: state.pathParameters["group_id"]!),
       ),
     ],
   );

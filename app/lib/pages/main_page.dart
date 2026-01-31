@@ -83,13 +83,18 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
               color: Colors.grey.shade700,
             ),
             GestureDetector(
-              onTap: () => GoRouter.of(context).push('/profile/123'),
+              onTap: () => GoRouter.of(
+                context,
+              ).push('/profile/123', extra: ["pfp-main", "wallet-main"]),
               child: Row(
                 children: [
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundImage: NetworkImage(
-                      "https://i.pravatar.cc/150?img=11",
+                  Hero(
+                    tag: 'pfp-main',
+                    child: const CircleAvatar(
+                      radius: 20,
+                      backgroundImage: NetworkImage(
+                        "https://cdn.dribbble.com/users/18924830/avatars/normal/25cecaeb59d31d07887ff220ea9ab686.png?1728297612",
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -105,11 +110,14 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
                       ),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Text(
-                      ('\$${200.formatWithCommas()}'),
-                      style: TextStyle(
-                        color: context.colorScheme.primary,
-                        fontWeight: FontWeight.bold,
+                    child: Hero(
+                      tag: 'wallet-main',
+                      child: Text(
+                        ('\$${200.formatWithCommas()}'),
+                        style: TextStyle(
+                          color: context.colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
