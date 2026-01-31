@@ -47,7 +47,6 @@ export const getUserTransactions = async (
         const userBets = pool.query(
             `SELECT *
             FROM transactions
-
             WHERE bet_id = $1`,
             [userId]
         );
@@ -67,10 +66,10 @@ export const createTransaction = async (
     amount: number,
     description: string,
     betId?: string,
-): Promise<any> => {
+): Promise<void> => {
     try {
         const now: Date = new Date(Date.now());
-        const result = pool.query(
+        pool.query(
             `INSERT INTO transactions (bet_id, user_id, amount, description, created_at)
             VALUES ($1, $2, $3, $4, $5)`,
             [betId, userId, amount, description, now]
