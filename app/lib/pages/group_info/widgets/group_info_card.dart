@@ -22,15 +22,16 @@ class GroupInfoCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 backgroundImage: AssetImage('assets/pfp.png'),
-                radius: 100,
+                radius: 80,
               ),
               SizedBox(height: 16.0),
               Text(
                 data['title'].toString(),
                 style: TextStyle(
                   color: context.colorScheme.onSurface,
-                  fontSize: 16,
+                  fontSize: 20,
                 ),
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 12),
               Text(
