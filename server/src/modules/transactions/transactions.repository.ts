@@ -15,8 +15,8 @@ const mapRowToUserTransaction = (row: any): UserTransaction => {
     return {
         amount: row.amount,
         placed_at: row.created_at,
+        description: row.description,
         bet_id: row.bet_id,
-        description: row.description
     }
 }
 
@@ -67,14 +67,9 @@ export const createTransaction = async (
     description: string,
     betId?: string,
 ): Promise<void> => {
-    try {
-        const now: Date = new Date(Date.now());
-        await pool.query(
-            `INSERT INTO transactions (bet_id, user_id, amount, description, created_at)
-            VALUES ($1, $2, $3, $4, $5)`,
-            [betId, userId, amount, description, now]
-        )
-    } catch (err: any) {
-        throw err;
-    }
+    await pool.query(
+        `INSERT INTO transactions (bet_id, user_id, amount, description)
+        VALUES ($1, $2, $3, $4, $5)`,
+        [betId, userId, amount, description]
+    )
 }
