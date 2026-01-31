@@ -48,7 +48,7 @@ class GroupMembersList extends StatelessWidget {
               child: GroupMemberCard(data: admin, isCurrentUserAdmin: amIAdmin),
             );
           }
-          if(index == 2) {
+          if (index == 2) {
             return Padding(
               padding: const EdgeInsets.only(left: 4, bottom: 4),
               child: Text(
@@ -57,13 +57,17 @@ class GroupMembersList extends StatelessWidget {
                   color: context.colorScheme.onSurface,
                   fontSize: 18,
                 ),
-              )
+              ),
             );
           }
           final member = otherMembers[index - 3];
           return Padding(
             padding: const EdgeInsets.only(left: 4, bottom: 4),
-            child: GroupMemberCard(data: member, isCurrentUserAdmin: amIAdmin, onKicked: () {}),
+            child: GroupMemberCard(
+              data: member,
+              isCurrentUserAdmin: amIAdmin,
+              onKicked: () {},
+            ),
           );
         },
       ),
