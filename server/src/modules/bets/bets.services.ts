@@ -106,6 +106,9 @@ export const decideBet = async (authUserID: string, betId: string, option: strin
         }
     })
 
+    const creatorCut = Math.round(total_pot * 2 / 100)
+    total_pot = Math.round(total_pot * 8 / 10)
+
     allBets.forEach((singleBet) => {
         if (singleBet.selected_option === bet.winning_option) {
             const wonAmount = Math.round((Number(singleBet.amount)) * total_pot / winning_pool) as number;
@@ -115,6 +118,8 @@ export const decideBet = async (authUserID: string, betId: string, option: strin
 
         notificationRepository.createNotification(singleBet.user_id, `The bet "${bet.title}" has been resolved.\nWinning option: "${bet.winning_option}".\n${singleBet.selected_option === bet.winning_option ? "Check your wallet for winnings!" : "Unfortunately, you did not win this time."}`);
     })
+
+    userRepository.updateUserWalletBalance(bet.created_by, creatorCut)
 
     // const winningBets = allBets.filter((singleBet) => singleBet.selected_option === bet.winning_option)
 
