@@ -8,7 +8,7 @@ const pool: Pool = new Pool({
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
   host: process.env.HOST,
-  port: process.env.DBPORT,
+  port: parseInt(process.env.DBPORT),
 });
 
 pool.on("error", (err: any) => {
