@@ -1,3 +1,4 @@
+import * as betRepository from "../bets/bets.repository.js";
 import * as groupRepository from "../groups/groups.repository.js";
 import { MessageResponseDTO } from "./dtos/message-response.dto.js";
 import * as messageRepo from "./message.repository.js";
@@ -7,7 +8,9 @@ export const sendMessage = async (
   senderID: string,
   content: string,
 ): Promise<MessageResponseDTO> => {
-  if (!(await groupRepository.isMember(senderID, roomID)))
+  const bet = await betRepository.getBetFromDB(roomID);
+
+  if (!(await groupRepository.isMember(senderID, bet.group_id)))
     throw new Error("User is not a member of this room");
 
   const message = await messageRepo.createMessage(roomID, senderID, content);
