@@ -7,7 +7,7 @@ class AppTheme {
       scaffoldBackgroundColor: Color(0xff111111),
       appBarTheme: AppBarTheme(
         backgroundColor: Color(0xff111111),
-        shape: Border(bottom: BorderSide(color: Color(0xff606060), width: 4.0)),
+        shape: Border(bottom: BorderSide(color: Color(0xff404040), width: 2.0)),
       ),
       colorScheme: ColorScheme(
         brightness: Brightness.dark,

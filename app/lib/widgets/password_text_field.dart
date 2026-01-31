@@ -55,7 +55,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         ),
         IconButton(
           onPressed: () => setState(() => obscure = !obscure),
-          icon: Icon(obscure ? Icons.visibility : Icons.visibility_off),
+          icon: Icon(obscure ? Icons.visibility_off : Icons.visibility),
         ),
       ],
     );
