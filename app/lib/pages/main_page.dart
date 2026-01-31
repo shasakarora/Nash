@@ -82,37 +82,39 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
               width: 32,
               color: Colors.grey.shade700,
             ),
-            Row(
-              children: [
-                const CircleAvatar(
-                  radius: 20,
-                  backgroundImage: NetworkImage(
-                    "https://i.pravatar.cc/150?img=11",
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: context.colorScheme.primary,
-                      width: 1.5,
-                    ),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Text(
-                    ('\$${200.formatWithCommas()}'),
-                    style: TextStyle(
-                      color: context.colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.0,
+            GestureDetector(
+              onTap: () => GoRouter.of(context).push('/profile/123'),
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 20,
+                    backgroundImage: NetworkImage(
+                      "https://i.pravatar.cc/150?img=11",
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 16),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: context.colorScheme.primary,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      ('\$${200.formatWithCommas()}'),
+                      style: TextStyle(
+                        color: context.colorScheme.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
