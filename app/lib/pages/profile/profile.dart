@@ -1,21 +1,76 @@
 import 'dart:math';
 
 import 'package:app/config/theme.dart';
-import 'package:app/extensions/datetime.dart';
-import 'package:app/extensions/number.dart';
 import 'package:flutter/material.dart';
+
+import 'widgets/header.dart';
 
 const String currentUser = "123";
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   final String userID;
 
   const ProfilePage({super.key, required this.userID});
 
   @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage>
+    with SingleTickerProviderStateMixin {
+  final GlobalKey headerKey = GlobalKey();
+  late AnimationController _controller;
+  late Animation<double> animation;
+
+  double columnHeight = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _measureColumnHeight();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _measureColumnHeight() {
+    final renderBox =
+        headerKey.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox != null) {
+      setState(() {
+        columnHeight = renderBox.size.height;
+
+        animation = Tween<double>(begin: 0, end: 1).animate(
+          CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
+        );
+
+        Future.delayed(
+          Duration(milliseconds: 300),
+          () => _controller.forward(),
+        );
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> data = {
+      "id": "id1",
+      "username": "Potata69",
+      "email": "potata@example.com",
       "wallet_balance": 60342.50,
+      "referral_code": "XiJ8l9",
       "last_month": 3840.9,
       "transactions": List.generate(
         20,
@@ -36,148 +91,29 @@ class ProfilePage extends StatelessWidget {
     };
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Profile",
-          style: TextStyle(color: context.colorScheme.onSurface),
-        ),
-        centerTitle: true,
-      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 16,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Your Balance",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: context.colorScheme.onSurface,
-                        ),
-                      ),
-                      Text(
-                        "\$${(data["wallet_balance"] as num).formatWithCommas()}",
-                        style: TextStyle(
-                          fontSize: 60,
-                          color: context.colorScheme.secondary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Card(
-                      child: SizedBox(
-                        height: 200,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.asset(
-                            "assets/profile.jpg",
-                            fit: BoxFit.cover,
-                          ),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                if (columnHeight > 0)
+                  AnimatedBuilder(
+                    animation: _controller,
+                    builder: (_, _) => Container(
+                      height: animation.value * columnHeight,
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.secondary,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(25),
+                          bottomRight: Radius.circular(25),
                         ),
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Card(
-                      child: Container(
-                        padding: EdgeInsets.all(16),
-                        height: 200,
-                        child: Column(
-                          children: [
-                            Text(
-                              "Referral Code",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: context.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                            Text(
-                              "XijW8N",
-                              style: TextStyle(
-                                color: context.colorScheme.onSurface,
-                                fontSize: 36,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Divider(height: 16),
-                            Text(
-                              "Total in Last Month",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: context.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                            Text(
-                              "\$${(data["last_month"] as num).formatWithCommas()}",
-                              style: TextStyle(
-                                color: context.colorScheme.onSurface,
-                                fontSize: 36,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Text(
-                "Transaction History",
-                style: TextStyle(
-                  fontSize: 26,
-                  color: context.colorScheme.onSurface,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: data["transactions"].length,
-                  itemBuilder: (context, index) {
-                    final Map<String, dynamic> transaction =
-                        data["transactions"][index];
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: ListTile(
-                        shape: Border(
-                          bottom: BorderSide(
-                            color: context.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                        title: Text(transaction["description"]),
-                        subtitle: Text(
-                          "\$${(transaction["amount"] as num).formatWithCommas()}",
-                        ),
-                        trailing: Text(
-                          (transaction["placed_at"] as DateTime)
-                              .toReadableFormat(),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+                ProfileHeader(data: data, headerKey: headerKey),
+              ],
+            ),
+          ],
         ),
       ),
     );
