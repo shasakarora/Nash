@@ -149,3 +149,16 @@ export const deleteGroup = async (groupId: string): Promise<void> => {
     [groupId],
   );
 };
+
+export const isMember = async (
+  userID: string,
+  groupID: string,
+): Promise<boolean> => {
+  const result = await pool.query(
+    `SELECT 1 FROM group_members
+        WHERE group_id=$1 AND user_id=$2`,
+    [groupID, userID],
+  );
+
+  return result.rowCount != 0;
+};
