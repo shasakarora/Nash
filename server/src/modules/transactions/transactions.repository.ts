@@ -47,7 +47,7 @@ export const getUserTransactions = async (
         const userBets = pool.query(
             `SELECT *
             FROM transactions
-            WHERE bet_id = $1`,
+            WHERE user_id = $1`,
             [userId]
         );
         const result = userBets.rows.map((row: any) => {
