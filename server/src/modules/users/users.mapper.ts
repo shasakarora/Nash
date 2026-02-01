@@ -18,7 +18,6 @@ export const toDifferentUserResponse = (user: User): DifferentUserDTO => {
     id: user.id,
     username: user.username,
     email: user.email,
-    referal_code: user.referral_code,
     created_at: user.created_at,
   };
 };

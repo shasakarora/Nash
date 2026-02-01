@@ -1,24 +1,23 @@
-import 'package:app/config/theme.dart';
-import 'package:app/widgets/creation_button.dart';
-import 'package:app/widgets/normal_text_field.dart';
+import '/config/theme.dart';
+import '/widgets/creation_button.dart';
+import '/widgets/normal_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class GroupCreation extends StatefulWidget {
-  const GroupCreation({super.key});
+class BetCreation extends StatefulWidget {
+  final String groupID;
+  const BetCreation({super.key, required this.groupID});
 
   @override
-  State<GroupCreation> createState() => _GroupCreationState();
+  State<BetCreation> createState() => _BetCreationState();
 }
 
-class _GroupCreationState extends State<GroupCreation> {
-  final groupNameController = TextEditingController();
-  final descriptionController = TextEditingController();
+class _BetCreationState extends State<BetCreation> {
+  final betTitleController = TextEditingController();
 
   @override
   void dispose() {
-    groupNameController.dispose();
-    descriptionController.dispose();
+    betTitleController.dispose();
     super.dispose();
   }
 
@@ -52,7 +51,7 @@ class _GroupCreationState extends State<GroupCreation> {
                 child: Column(
                   children: [
                     Text(
-                      "Become Social!",
+                      "Get Set Bet!",
                       style: TextStyle(
                         color: context.colorScheme.onSurface,
                         fontSize: 24,
@@ -61,25 +60,17 @@ class _GroupCreationState extends State<GroupCreation> {
                     ),
                     SizedBox(height: 32.0),
                     CustomTextField(
-                      hintText: "Group Name",
-                      controller: groupNameController,
+                      hintText: "Bet Title",
+                      controller: betTitleController,
                       maxLength: 32,
                     ),
-                    SizedBox(height: 16.0),
-                    CustomTextField(
-                      hintText: "Description",
-                      minLines: 4,
-                      maxLines: 8,
-                      keyboardType: TextInputType.multiline,
-                      controller: descriptionController,
-                    ),
-                    SizedBox(height: 32.0),
+                    SizedBox(height: 24.0),
                     CreationButton(
                       onPressed: () {
-                        context.go('/groups');
+                        context.pop();
                         return null;
                       },
-                      title: "Create Group",
+                      title: "Create Bet",
                     ),
                   ],
                 ),

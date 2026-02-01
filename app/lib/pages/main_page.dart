@@ -1,8 +1,11 @@
-import 'package:app/config/theme.dart';
-import 'package:app/extensions/number.dart';
+import 'package:app/controllers/user.dart';
+import 'package:app/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '/config/theme.dart';
+import '/extensions/number.dart';
 
 class MainScaffold extends ConsumerStatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -23,6 +26,8 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    final User user = ref.read(userControllerProvider).value!;
+
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -83,18 +88,13 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
               color: Colors.grey.shade700,
             ),
             GestureDetector(
-              onTap: () => GoRouter.of(
-                context,
-              ).push('/profile/123', extra: ["pfp-main", "wallet-main"]),
+              onTap: () => context.push('/profile/${user.id}'),
               child: Row(
                 children: [
-                  Hero(
-                    tag: 'pfp-main',
-                    child: const CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(
-                        "https://cdn.dribbble.com/users/18924830/avatars/normal/25cecaeb59d31d07887ff220ea9ab686.png?1728297612",
-                      ),
+                  const CircleAvatar(
+                    radius: 20,
+                    backgroundImage: NetworkImage(
+                      "https://cdn.dribbble.com/users/18924830/avatars/normal/25cecaeb59d31d07887ff220ea9ab686.png?1728297612",
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -110,13 +110,10 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
                       ),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Hero(
-                      tag: 'wallet-main',
-                      child: 200.nashFormat(
-                        style: TextStyle(
-                          color: context.colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    child: user.balance!.nashFormat(
+                      style: TextStyle(
+                        color: context.colorScheme.primary,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),

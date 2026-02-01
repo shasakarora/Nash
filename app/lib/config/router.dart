@@ -1,40 +1,47 @@
-import 'package:app/pages/bet_creation/bet_creation.dart';
-import 'package:app/pages/group_bets/group_bets.dart';
-import 'package:app/pages/group_creation/group_creation.dart';
-import 'package:app/pages/group_info/group_info.dart';
-import 'package:app/pages/groups/groups.dart';
-import 'package:app/pages/search/search.dart';
-import 'package:app/pages/splash/splash.dart';
-import 'package:app/providers/auth_state_provider.dart';
-import 'package:app/utils/auth_router_notifier.dart';
-import 'package:app/widgets/sliding_shell_stack.dart';
+import 'package:app/controllers/auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import '/pages/bet/bet.dart';
+import '/pages/bet/bet_creation/bet_creation.dart';
+import '/pages/groups/group_bets/group_bets.dart';
+import '/pages/groups/group_creation/group_creation.dart';
+import '/pages/groups/group_info/group_info.dart';
+import '/pages/groups/groups.dart';
 import '/pages/home/home.dart';
 import '/pages/login/login.dart';
 import '/pages/main_page.dart';
 import '/pages/profile/profile.dart';
 import '/pages/register/register.dart';
+import '/pages/search/search.dart';
+import '/pages/splash/splash.dart';
+import '/widgets/sliding_shell_stack.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authStateProvider);
-  final notifier = ref.watch(authRouterNotifierProvider);
+  final authState = ref.watch(authControllerProvider);
+
   return GoRouter(
     initialLocation: '/splash',
-    refreshListenable: notifier,
     redirect: (_, state) {
-      if (authState == AuthStatus.loading) return '/splash';
+      final location = state.matchedLocation;
 
-      final isLoggedIn = (authState == AuthStatus.authenticated);
-
-      if (isLoggedIn &&
-          (state.matchedLocation == "/auth/register" ||
-              state.matchedLocation == "/auth/login")) {
-        return "/home";
+      if (authState == AuthStatus.unknown) {
+        return location == '/splash' ? null : '/splash';
       }
 
-      return null;
+      final isAuthRoute =
+          location == '/auth/login' || location == '/auth/register';
+
+      if (authState == AuthStatus.authenticated) {
+        if (isAuthRoute || location == '/splash') {
+          return '/home';
+        }
+        return null;
+      }
+
+      if (isAuthRoute) return null;
+
+      return '/auth/login';
     },
     routes: [
       StatefulShellRoute(
@@ -98,10 +105,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/profile/:user_id',
-        builder: (context, state) => ProfilePage(
-          userID: state.pathParameters["user_id"]!,
-          heroTags: state.extra as List<String>,
-        ),
+        builder: (context, state) =>
+            ProfilePage(userID: state.pathParameters["user_id"]!),
       ),
       GoRoute(
         path: '/groups/:group_id/bets',
@@ -113,9 +118,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(
-        path:'/group/:group_id/bet_creation',
-        builder:(context, state) => BetCreation(groupID: state.pathParameters["group_id"]!),
-      )
+        path: '/group/:group_id/bet_creation',
+        builder: (context, state) =>
+            BetCreation(groupID: state.pathParameters["group_id"]!),
+      ),
     ],
   );
 });

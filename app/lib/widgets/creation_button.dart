@@ -1,11 +1,16 @@
-import 'package:app/config/theme.dart';
 import 'package:flutter/material.dart';
 
+import '/config/theme.dart';
+
 class CreationButton extends StatefulWidget {
-  final Future? Function() onPressed;
+  final Future? Function()? onPressed;
   final String title;
 
-  const CreationButton({super.key, required this.onPressed, required this.title});
+  const CreationButton({
+    super.key,
+    required this.onPressed,
+    required this.title,
+  });
 
   @override
   State<CreationButton> createState() => _CreationButtonState();

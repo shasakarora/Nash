@@ -1,4 +1,4 @@
-import 'package:app/models/member.dart';
+import '/models/member.dart';
 
 class Group {
   final String groupID;
@@ -14,7 +14,7 @@ class Group {
     required this.description,
     required this.createdAt,
     required this.createdBy,
-    required this.memberList
+    required this.memberList,
   });
 
   factory Group.fromJSON(Map<String, dynamic> json) { 
