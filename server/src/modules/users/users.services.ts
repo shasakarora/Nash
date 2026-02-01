@@ -4,6 +4,7 @@ import {DifferentUserDTO as DifferentUserResponseDTO} from "./dtos/different-use
 import { toDifferentUserResponse, toSameUserResponse } from "./users.mapper.js";
 import { CheckInResponseDTO } from "./dtos/check-in-response.dto.js";
 import { Group } from "../groups/groups.model.js";
+import { Bet, UserBet } from "../bets/bets.model.js";
 
 export const getUser = async (authUserID: string, requestedUserID: string): Promise<SameUserResponseDTO | DifferentUserResponseDTO> => {
     const user = await userRepository.getUserFromDB(requestedUserID);
@@ -24,4 +25,19 @@ export const getGroups = async (authUserID: string): Promise<Group[]> => {
     const groupIds = response.map(group => group.group_id)
     const groups = await userRepository.getGroups(groupIds)
     return groups
+}
+
+export const getUserPlacedOpenBets = async (authUserID: string): Promise<UserBet[]> => {
+    const allUserPlacedBets = await userRepository.getUserPlacedBets(authUserID);
+    const allUserPlacedBetIds = allUserPlacedBets.map((bet)=> bet.bet_id)
+    const openBets = await userRepository.getOpenBetsFromPlacedBets(allUserPlacedBetIds);
+    const openBetIds = openBets.map((bet)=> bet.id);
+
+    const userPlacedOpenBets = allUserPlacedBets.filter((bet)=> openBetIds.includes(bet.bet_id));
+    return userPlacedOpenBets;
+}
+
+export const getUserCreatedOpenBets = async (authUserID: string): Promise<Bet[]> => {
+    const allUserCreatedOpenBets = await userRepository.getUserCreatedOpenBets(authUserID);
+    return allUserCreatedOpenBets;
 }

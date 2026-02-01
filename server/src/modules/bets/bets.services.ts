@@ -94,6 +94,9 @@ export const decideBet = async (authUserID: string, betId: string, option: strin
     if (thisBet.status !== "open") {
         throw new Error("Bet not open")
     }
+    if(thisBet.creator_id !== authUserID) {
+        throw new Error("Only the creator of bet is authorized to decide the outcome.")
+    }
     const bet = await betRespository.decideBet(betId, option);
     betRespository.markResolved(betId);
 
