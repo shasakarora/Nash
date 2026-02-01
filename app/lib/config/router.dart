@@ -21,21 +21,28 @@ import '/widgets/sliding_shell_stack.dart';
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
   final notifier = ref.watch(authRouterNotifierProvider);
+
   return GoRouter(
     initialLocation: '/splash',
     refreshListenable: notifier,
     redirect: (_, state) {
       if (authState == AuthStatus.loading) return '/splash';
 
-      final isLoggedIn = (authState == AuthStatus.authenticated);
-
-      if (isLoggedIn &&
-          (state.matchedLocation == "/auth/register" ||
-              state.matchedLocation == "/auth/login")) {
-        return "/home";
+      if (authState == AuthStatus.authenticated) {
+        if (state.matchedLocation == "/auth/register" ||
+            state.matchedLocation == "/auth/login") {
+          return "/home";
+        } else {
+          return null;
+        }
+      } else {
+        if (state.matchedLocation == "/auth/register" ||
+            state.matchedLocation == "/auth/login") {
+          return null;
+        } else {
+          return "/auth/login";
+        }
       }
-
-      return null;
     },
     routes: [
       StatefulShellRoute(

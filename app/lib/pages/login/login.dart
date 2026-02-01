@@ -1,12 +1,13 @@
-import '/config/theme.dart';
-import '/providers/auth_interceptor.dart';
-import '/widgets/creation_button.dart';
-import '/widgets/normal_text_field.dart';
-import '/widgets/password_text_field.dart';
+import 'package:app/controllers/auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '/config/theme.dart';
+import '/widgets/creation_button.dart';
+import '/widgets/normal_text_field.dart';
+import '/widgets/password_text_field.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -90,7 +91,7 @@ class _LoginPageConsumerState extends ConsumerState<LoginPage> {
                                 CreationButton(
                                   onPressed: () async {
                                     ref
-                                        .read(authInterceptorProvider)
+                                        .read(authControllerProvider.notifier)
                                         .login(
                                           email: emailController.text,
                                           password: passwordController.text,

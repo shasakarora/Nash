@@ -1,7 +1,8 @@
-import '/providers/auth_state_provider.dart';
-import '/services/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '/providers/auth_state_provider.dart';
+import '/services/storage_service.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -18,7 +19,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   Future<void> _checkAuth() async {
-    final token = await storage.read(key: StorageService.keyAccessToken);
+    final String? token = await storage.read(
+      key: StorageService.keyAccessToken,
+    );
 
     ref.read(authStateProvider.notifier).state = token == null
         ? AuthStatus.unauthenticated
@@ -35,6 +38,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         );
       }
     });
+
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }
