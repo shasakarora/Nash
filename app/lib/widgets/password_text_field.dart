@@ -31,9 +31,8 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             controller: widget.controller,
             validator: widget.validator,
             obscureText: obscure,
-            style: TextStyle(
-              color: Colors.grey[100],
-            ),
+            cursorColor: context.colorScheme.onSurface,
+            style: TextStyle(color: Colors.grey[100]),
             decoration: InputDecoration(
               hintText: widget.hintText,
               filled: true,

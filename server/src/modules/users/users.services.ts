@@ -1,6 +1,8 @@
+import { Bet } from "../bets/bets.model.js";
 import { Group } from "../groups/groups.model.js";
 import { CheckInResponseDTO } from "./dtos/check-in-response.dto.js";
 import { DifferentUserDTO as DifferentUserResponseDTO } from "./dtos/different-user.dto.js";
+import { OpenPlacedBetResponseDTO } from "./dtos/open-placed-bet-response.dto.js";
 import { SameUserDTO as SameUserResponseDTO } from "./dtos/same-user.dto.js";
 import { toDifferentUserResponse, toSameUserResponse } from "./users.mapper.js";
 import * as userRepository from "./users.repository.js";
@@ -36,4 +38,30 @@ export const getGroups = async (authUserID: string): Promise<Group[]> => {
   const groupIds = response.map((group) => group.group_id);
   const groups = await userRepository.getGroups(groupIds);
   return groups;
+};
+
+export const getUserPlacedOpenBets = async (
+  authUserID: string,
+): Promise<OpenPlacedBetResponseDTO[]> => {
+  return (await userRepository.getOpenPlacedBets(authUserID)).map((bet) => {
+    return {
+      id: bet.id,
+      title: bet.title,
+      expires_at: bet.expires_at,
+      created_at: bet.created_at,
+      total_pot: bet.total_pot,
+      my_bet: {
+        amount: bet.amount,
+        option: bet.selected_option,
+      },
+    };
+  });
+};
+
+export const getUserCreatedOpenBets = async (
+  authUserID: string,
+): Promise<Bet[]> => {
+  const allUserCreatedOpenBets =
+    await userRepository.getUserCreatedOpenBets(authUserID);
+  return allUserCreatedOpenBets;
 };

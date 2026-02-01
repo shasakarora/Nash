@@ -1,14 +1,15 @@
-import '/config/theme.dart';
 import 'package:flutter/material.dart';
+
+import '/config/theme.dart';
 
 class GroupCard extends StatelessWidget {
   final String groupName;
-  final int memberNumber;
+  final String description;
 
   const GroupCard({
     super.key,
     required this.groupName,
-    required this.memberNumber,
+    required this.description,
   });
 
   @override
@@ -45,7 +46,7 @@ class GroupCard extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  '$memberNumber members',
+                  description,
                   style: TextStyle(
                     color: context.colorScheme.onSurfaceVariant,
                     fontSize: 12,

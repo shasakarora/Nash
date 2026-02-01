@@ -1,7 +1,7 @@
 class PlacedBet {
-  final double amount;
+  final int amount;
   final String option;
-  final double expectedPayout;
+  final int expectedPayout;
 
   PlacedBet({
     required this.amount,
@@ -10,8 +10,8 @@ class PlacedBet {
   });
 
   static fromJSON(Map<String, dynamic> data) => PlacedBet(
-    amount: data['amount'],
+    amount: int.parse(data['amount']),
     option: data['option'],
-    expectedPayout: data['payout'],
+    expectedPayout: data['payout'] != null ? int.parse(data["payout"]) : 0,
   );
 }
