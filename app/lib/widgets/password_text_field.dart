@@ -31,17 +31,20 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             controller: widget.controller,
             validator: widget.validator,
             obscureText: obscure,
+            style: TextStyle(
+              color: Colors.grey[100],
+            ),
             decoration: InputDecoration(
               hintText: widget.hintText,
               filled: true,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20.0),
                 borderSide: BorderSide(
-                  color: context.colorScheme.secondary,
-                  width: 2,
+                  color: context.colorScheme.primary,
+                  width: 4,
                 ),
               ),
-              fillColor: Colors.grey[100],
+              fillColor: Colors.grey[850],
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20.0),
                 borderSide: BorderSide.none,
