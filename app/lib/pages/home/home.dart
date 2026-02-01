@@ -1,9 +1,12 @@
+import 'package:app/controllers/user.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import '/config/theme.dart';
 import '/pages/home/widgets/group_card_scroll_view.dart';
 import '/pages/home/widgets/home_created_bets_carousel.dart';
 import '/pages/home/widgets/home_placed_bets_carousel.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,26 +25,29 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RichText(
-                textAlign: TextAlign.start,
-                text: TextSpan(
-                  style: context.textTheme.headlineMedium!.copyWith(
-                    color: context.colorScheme.onSurfaceVariant,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 24.0,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(text: "Welcome Back, "),
-                    TextSpan(
-                      text: "SuckSuck.",
-                      style: context.textTheme.headlineMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: context.colorScheme.onSurfaceVariant,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 24.0,
-                      ),
+              Consumer(
+                builder: (context, ref, _) => RichText(
+                  textAlign: TextAlign.start,
+                  text: TextSpan(
+                    style: context.textTheme.headlineMedium!.copyWith(
+                      color: context.colorScheme.onSurfaceVariant,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 24.0,
                     ),
-                  ],
+                    children: <TextSpan>[
+                      TextSpan(text: "Welcome Back, "),
+                      TextSpan(
+                        text:
+                            "${ref.read(userControllerProvider).value!.username}.",
+                        style: context.textTheme.headlineMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: context.colorScheme.onSurfaceVariant,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 24.0,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 20.0),
